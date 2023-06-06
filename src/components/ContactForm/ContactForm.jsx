@@ -1,34 +1,35 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { nanoid } from 'nanoid';
 import s from './ContactForm.module.css';
 
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: ''
-  };
+export const ContactForm = ({onAddContact}) =>  {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value)
+    }
     };
     
-    handleSubmit = e => {
+    const handleSubmit = (e) => {
     e.preventDefault();
     const newContact = {
       id: nanoid(),
-      name: this.state.name.trim(),
-      number: this.state.number.trim(),
+      name: name.trim(),
+      number: number.trim(),
     };
-    this.props.onAddContact(newContact);
-    this.setState({ name: '', number: '' });
-  };
-
-  render() {
-    const { name, number } = this.state;
+      onAddContact(newContact);
+      setName('')
+      setNumber('')
+    };
 
     return (
-        <form className={s.fomSubmit} onSubmit={this.handleSubmit}>
+        <form className={s.fomSubmit} onSubmit={handleSubmit}>
             <p>Name</p>
         <input
           type="text"
@@ -37,7 +38,7 @@ class ContactForm extends Component {
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
           value={name}
-          onChange={this.handleChange}
+          onChange={handleChange}
             />
             <p>Number</p>
         <input
@@ -47,12 +48,11 @@ class ContactForm extends Component {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           value={number}
-          onChange={this.handleChange}
+          onChange={handleChange}
         />
         <button className={s.btnAddContact} type="submit">Add contact</button>
       </form>
     );
-  }
 }
 
 export default ContactForm;
