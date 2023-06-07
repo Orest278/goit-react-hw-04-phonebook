@@ -3,6 +3,7 @@ import ContactList from "./ContactList/ContactList";
 import Filter from "./Filter/Filter";
 import ContactForm from "./ContactForm/ContactForm";
 import s from './Add.module.css';
+import PropTyps from 'prop-types'
 
 export const App = () => {
   const [contacts, setContacts] = useState([
@@ -62,5 +63,25 @@ export const App = () => {
     </div>
   );
 };
+
+App.propTyps = {
+  contacts: PropTyps.arrayOf(
+    PropTyps.shape({
+      id: PropTyps.string.isRequired,
+      name: PropTyps.string.isRequired,
+      number: PropTyps.string.isRequired,
+    })
+  ),
+  filter: PropTyps.string,
+  handleDelete: PropTyps.func.isRequired,
+  addContact: PropTyps.func.isRequired,
+  handleFilterChange: PropTyps.func.isRequired,
+  filteredContacts: PropTyps.arrayOf({
+    id: PropTyps.string.isRequired,
+    name: PropTyps.string.isRequired,
+    number: PropTyps.string.isRequired
+  }),
+  
+}
 
 export default App;
